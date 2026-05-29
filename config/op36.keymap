@@ -80,6 +80,13 @@
             bindings = <&kp M &kp A &kp R &kp I &kp Y &kp A &kp N0>;
             label = "SCR_UNLOCK";
         };
+
+        prnt_scr: prnt_scr {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LG(LS(NUMBER_4))>;
+            label = "PRNT_SCR";
+        };
     };
 
     keymap {
@@ -121,7 +128,7 @@
         adj {
             bindings = <
   &bootloader  &kp F1        &kp F2         &kp F3         &kp F4                     &bt BT_SEL 0  &bt BT_SEL 1       &none                &none               &bt BT_CLR
-  &kp LGUI     &hml LALT F5  &hml LCTRL F6  &hml LSHFT F7  &kp F8                     &none         &hmr RSHFT C_MUTE  &hmr RCTRL C_VOL_DN  &hmr LALT C_VOL_UP  &kp RGUI
+  &kp LGUI     &hml LALT F5  &hml LCTRL F6  &hml LSHFT F7  &kp F8                     &prnt_scr     &hmr RSHFT C_MUTE  &hmr RCTRL C_VOL_DN  &hmr LALT C_VOL_UP  &kp RGUI
   &none        &kp F9        &kp F10        &kp F11        &kp F12                    &none         &kp C_PREV         &kp C_PP             &kp C_NEXT          &none
                                             &trans         &trans   &trans    &trans  &trans        &trans
             >;
