@@ -2,7 +2,6 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
-#include <dt-bindings/zmk/outputs.h>
 
 &mt {
     quick-tap-ms = <200>;
@@ -53,15 +52,45 @@
         };
     };
 
+    macros {
+        next_scr: next_scr {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LC(RIGHT_ARROW)>;
+            label = "NEXT_SCR";
+        };
+
+        prev_scr: prev_scr {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LC(LEFT_ARROW)>;
+            label = "PREV_SCR";
+        };
+
+        scr_lock: scr_lock {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LG(RC(Q))>;
+            label = "SCR_LOCK";
+        };
+
+        scr_unlock: scr_unlock {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp M &kp A &kp R &kp I &kp Y &kp A &kp N0>;
+            label = "SCR_UNLOCK";
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
         base {
             bindings = <
   &kp Q        &kp W        &kp E         &kp R          &kp T                          &kp Y  &kp U         &kp I         &kp O        &kp P
-  &hml LGUI A  &hml LALT S  &hml LSHFT D  &hml LCTRL F   &kp G                          &kp H  &hmr RCTRL J  &hmr RSHFT K  &hmr LALT L  &hmr RGUI SEMICOLON
+  &hml LGUI A  &hml LALT S  &hml LCTRL D  &hml LSHFT F   &kp G                          &kp H  &hmr RSHFT J  &hmr RCTRL K  &hmr LALT L  &hmr RGUI SEMICOLON
   &kp Z        &kp X        &kp C         &kp V          &kp B                          &kp N  &kp M         &kp COMMA     &kp DOT      &kp SQT
-                                          &kp BACKSPACE  &mo 1  &kp SPACE    &kp ENTER  &mo 2  &kp TAB
+                                          &kp BACKSPACE  &mo 1  &kp SPACE    &kp ENTER  &mo 2  &kp ESC
             >;
 
             display-name = "Base";
@@ -69,10 +98,10 @@
 
         nav {
             bindings = <
-  &kp N1         &kp N2    &kp N3     &kp N4     &kp N5                        &kp N6           &kp N7           &kp N8           &kp N9        &kp N0
-  &hml LGUI ESC  &kp LALT  &kp LSHFT  &kp LCTRL  &kp ENTER                     &kp PRINTSCREEN  &hmr RCTRL LEFT  &hmr RSHFT DOWN  &hmr LALT UP  &hmr RGUI RIGHT
-  &none          &kp HOME  &kp INS    &kp END    &kp DELETE                    &kp CAPS         &none            &kp PG_DN        &kp PG_UP     &none
-                                      &trans     &trans      &trans    &trans  &mo 3            &trans
+  &kp N1     &kp N2       &kp N3     &kp N4     &kp N5                    &kp N6     &kp N7           &kp N8           &kp N9            &kp N0
+  &kp LGUI   &kp LALT     &kp LCTRL  &kp LSHFT  &kp F5                    &kp TAB    &hmr RSHFT LEFT  &hmr RCTRL DOWN  &hmr LALT UP      &hmr RGUI RIGHT
+  &scr_lock  &scr_unlock  &kp F1     &kp F2     &kp F6                    &prev_scr  &next_scr        &kp BACKSLASH    &kp LEFT_BRACKET  &kp RIGHT_BRACKET
+                                     &trans     &trans  &trans    &trans  &mo 3      &trans
             >;
 
             display-name = "Nav";
@@ -80,10 +109,10 @@
 
         sym {
             bindings = <
-  &none           &kp LT          &kp EQUAL         &kp GT           &kp GRAVE                    &kp CARET  &kp LBKT         &kp UNDER        &kp RBKT        &none
-  &hml LGUI BSLH  &hml LALT LPAR  &hml LSHFT MINUS  &hml LCTRL RPAR  &kp PLUS                     &kp PRCNT  &hmr RCTRL LBRC  &hmr RSHFT SEMI  &hmr LALT RBRC  &hmr RGUI EXCL
-  &kp HASH        &kp STAR        &kp COLON         &kp FSLH         &none                        &none      &kp PIPE         &kp TILDE        &kp AMPS        &kp DLLR
-                                                    &trans           &mo 3      &trans    &trans  &trans     &trans
+  &kp TILDE               &kp GRAVE                &kp MINUS                    &kp UNDER        &kp SEMI                     &kp COMMA  &kp PLUS         &kp EQUAL               &kp PRCNT            &kp HASH
+  &hml LGUI LEFT_BRACKET  &hml LALT RIGHT_BRACKET  &hml LCTRL LEFT_PARENTHESIS  &hml LSHFT RPAR  &kp COLON                    &kp DOT    &hmr RSHFT LBRC  &hmr RCTRL RIGHT_BRACE  &hmr LALT LESS_THAN  &hmr RGUI GREATER_THAN
+  &kp AT_SIGN             &kp CARET                &kp BACKSLASH                &kp PIPE         &kp SLASH                    &kp QMARK  &kp EXCL         &kp ASTRK               &kp AMPS             &kp DLLR
+                                                                                &trans           &mo 3      &trans    &trans  &trans     &trans
             >;
 
             display-name = "Symbols";
@@ -91,9 +120,9 @@
 
         adj {
             bindings = <
-  &bootloader  &kp F1        &kp F2         &kp F3         &kp F4                     &bt BT_SEL 0  &bt BT_SEL 1         &bt BT_SEL 2       &bt BT_SEL 3        &bt BT_CLR
-  &kp LGUI     &hml LALT F5  &hml LSHFT F6  &hml LCTRL F7  &kp F8                     &out OUT_BLE  &hmr RCTRL C_VOL_DN  &hmr RSHFT C_MUTE  &hmr LALT C_VOL_UP  &kp RGUI
-  &none        &kp F9        &kp F10        &kp F11        &kp F12                    &out OUT_USB  &kp C_PREV           &kp C_PP           &kp C_NEXT          &studio_unlock
+  &bootloader  &kp F1        &kp F2         &kp F3         &kp F4                     &bt BT_SEL 0  &bt BT_SEL 1       &none                &none               &bt BT_CLR
+  &kp LGUI     &hml LALT F5  &hml LCTRL F6  &hml LSHFT F7  &kp F8                     &none         &hmr RSHFT C_MUTE  &hmr RCTRL C_VOL_DN  &hmr LALT C_VOL_UP  &kp RGUI
+  &none        &kp F9        &kp F10        &kp F11        &kp F12                    &none         &kp C_PREV         &kp C_PP             &kp C_NEXT          &none
                                             &trans         &trans   &trans    &trans  &trans        &trans
             >;
 
